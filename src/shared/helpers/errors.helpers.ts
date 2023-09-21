@@ -26,7 +26,6 @@ export default class ErrorHandle {
     if (process.env.NODE_ENV !== 'production') {
       objError.stack = error.stack;
     }
-    // res.status(error.status).send(error.message)
     res.status(error.status ? error.status : 500).json(objError);
   }
   static catchError(
