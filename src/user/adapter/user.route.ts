@@ -28,6 +28,6 @@ route.post(
   ErrorHandle.catchError(controller.insert.bind(controller)),
 );
 route.put('/:id', ErrorHandle.catchError(controller.update.bind(controller)));
-route.delete('/:id', controller.delete.bind(controller));
+route.delete('/:id', ErrorHandle.catchError(controller.delete.bind(controller)));
 
 export default route;
