@@ -75,6 +75,7 @@ export default class UserOperation
   ): Promise<Result<UserModel>> {
     return new Promise((resolve, reject) => {
       let recordToUpdate: any = this.allUsers.find((user) => user.dni === where.dni);
+      console.log('delete')
       if (!recordToUpdate) {
         const error: IError = new Error('Not Exist User');
         error.status = 404;
