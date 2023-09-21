@@ -4,6 +4,8 @@ import UserController from './user.controller';
 import UserOperation from '../infraestructure/user.operation';
 import { FileUseCase } from '../../file/file.usecase';
 import ErrorHandle from '../../shared/helpers/errors.helpers';
+import { schemas } from './user.schema';
+import { Validators } from '../../shared/helpers/validate.middleware';
 
 
 const operation = new UserOperation();
@@ -22,6 +24,7 @@ route.get('/:id', ErrorHandle.catchError(controller.getOne.bind(controller)));
 
 route.post(
   '/',
+  Validators.validate(schemas.INSERT),
   ErrorHandle.catchError(controller.insert.bind(controller)),
 );
 route.put('/:id', ErrorHandle.catchError(controller.update.bind(controller)));
