@@ -8,9 +8,10 @@ const delayToAttempts = 10000;
 const maxAttempts = 3;
 export class FileUseCase{
     constructor(private userUseCase:UserUseCase){
+        // if you test try Attempts, send  this.watchPath(true)
         this.watchPath()
     }
-    private watchPath(){
+    private watchPath(testError:boolean = false){
         const watcher = chokidar.watch( folderToWatch, {
             persistent: true
         }); 
@@ -20,7 +21,9 @@ export class FileUseCase{
             console.log(`a file has been uploaded : ${nameFile}`);
             const isCsv = filePath.endsWith('.csv') ;
             if(!isCsv) return;
-            this.saveValidDocument(filePath)
+            const PATH_FILE_CORRUPT = 'archivo_que_no_existe.txt'
+
+            this.saveValidDocument(testError ? PATH_FILE_CORRUPT:filePath)
         })
         .on('error', (error) => {
             console.error(error)
@@ -35,6 +38,14 @@ export class FileUseCase{
             }
 
             fs.createReadStream(PATH_FILE, "utf-8")
+            .on('error', (error) => {
+                console.log('intempts: ',attempts+1,{error})
+                setTimeout(() => {
+                    this.saveValidDocument(PATH_FILE, attempts + 1)
+                        .then(resolve)
+                        .catch(reject)
+                }, delayToAttempts);
+            })
             .pipe(es.split())
             .on('data',async(data)=>{
                 const value = data.split(',');
@@ -49,13 +60,7 @@ export class FileUseCase{
             .on('end', () => {
                 resolve()
             })
-            .on('error', (error) => {
-                setTimeout(() => {
-                    this.saveValidDocument(PATH_FILE, attempts + 1)
-                        .then(resolve)
-                        .catch(reject)
-                }, delayToAttempts);
-            })
+            
         })
     }
 
