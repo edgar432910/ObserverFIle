@@ -5,7 +5,8 @@ Observar un archivo, reaccionar cuando suber archivos, y capturar la data y alma
 ```
  ## Stack 
  ```
-nodejs, express
+nodejs: 20.40
+, express: 4.18.2
 ```
 ## Comandos 
 ```
