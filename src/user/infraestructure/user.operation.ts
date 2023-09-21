@@ -54,12 +54,15 @@ export default class UserOperation
   }
 
   async insert(entity: UserModel): Promise<Result<UserModel>> {
+    return new Promise((resolve, reject) => {
+      
+      this.allUsers = [
+        ...this.allUsers, entity
+      ]
+      resolve( ResponseDto.format('', this.allUsers))
+    })
 
-    this.allUsers = [
-      ...this.allUsers, entity
-    ]
-
-    return ResponseDto.format('', this.allUsers);
+   
   }
 
   async update(

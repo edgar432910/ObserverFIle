@@ -1,10 +1,6 @@
 import Result from '../../shared/interfaces/result.interface';
 import { UserModel } from '../../user/domain/user.model';
 import UserRepository from './user.repository';
-import yenv from 'yenv';
-
-const env = yenv();
-
 export default class UserUseCase {
   constructor(
     public repository: UserRepository
